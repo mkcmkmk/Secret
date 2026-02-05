@@ -1,0 +1,78 @@
+<style>
+  /* Full page center */
+.page{
+  min-height: 100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 24px;
+  background: #fff; /* optional */
+}
+
+/* Paper container */
+.paper{
+  position: relative;             /* IMPORTANT for overlay */
+  width: min(736px, 95vw);        /* responsive */
+  aspect-ratio: 736 / 1104;       /* keeps paper proportion */
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 18px 60px rgba(0,0,0,.08);
+}
+
+/* Paper image */
+.paper-img{
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  display:block;
+}
+
+/* Text area on top of paper */
+.paper-text{
+  position:absolute;
+  /* 👇 Adjust these 4 values to match your paper's "writing area" */
+  top: 190px;
+  left: 110px;
+  right: 110px;
+  bottom: 140px;
+
+  border: none;
+  outline: none;
+  resize: none;
+
+  background: transparent;     /* makes it look like writing on paper */
+  color: #111827;
+  font-size: 18px;
+  line-height: 1.7;
+  font-family: "Georgia", serif; /* nice letter feel */
+
+  padding: 0;
+}
+
+/* Mobile tweaks */
+@media (max-width: 520px){
+  .paper-text{
+    top: 140px;
+    left: 60px;
+    right: 60px;
+    bottom: 90px;
+    font-size: 15px;
+  }
+}
+
+</style>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ <div class="page">
+  <div class="paper">
+    <img src="asset/letter.png" alt="letter paper" class="paper-img">
+
+    <!-- Text field on top of paper -->
+    <textarea class="paper-text" placeholder=""></textarea>
+  </div>
+</div>

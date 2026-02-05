@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>💌 One Question</title>
+
+<style>
+  :root{
+    --pink:#fb7185;
+    --pink2:#f43f5e;
+    --muted:#6b7280;
+    --bg:#ffe4e6;
+  }
+
+  body{
+    margin:0;
+    min-height:100vh;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    background: radial-gradient(1000px 600px at 20% 10%, #fff1f5, transparent),
+                radial-gradient(900px 500px at 80% 90%, #ffd1dc, transparent),
+                var(--bg);
+  }
+
+  /* FULL SCREEN WHITE PANEL */
+  .screen{
+    position:fixed;
+    inset:0;
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+
+  /* Content wrapper */
+  .content{
+    width:min(820px, 100%);
+    display:flex;
+    gap:18px;
+    align-items:center;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+
+  /* left text */
+  .textBox{
+    flex: 1 1 420px;
+    min-width: 280px;
+    text-align:left;
+  }
+
+  h1{
+    margin:0 0 8px;
+    font-size:28px;
+    line-height:1.15;
+  }
+
+  p{
+    margin:0;
+    color:var(--muted);
+    font-size:15px;
+    line-height:1.6;
+  }
+
+  /* GIF area right beside question */
+  .gifBox{
+    flex: 0 0 170px;
+    width:170px;
+    height:170px;
+    border-radius:22px;
+    background:#fff7f9;
+    border:1px solid #fbcfe8;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    box-shadow: 0 18px 60px rgba(0,0,0,.08);
+  }
+  .gifBox img{
+    width:100%;
+    height:100%;
+    object-fit: cover;      /* fills box nicely */
+    object-position: center;/* keeps it centered */
+    display:block;
+  }
+  .gifPlaceholder{
+    color:#9ca3af;
+    font-weight:700;
+    font-size:13px;
+    padding:14px;
+    text-align:center;
+  }
+
+   .gifBox1{
+    flex: 0 0 170px;
+    width:170px;
+    height:170px;
+    border-radius:22px;
+    background:#fff7f9;
+    border:1px solid #fbcfe8;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    box-shadow: 0 18px 60px rgba(0,0,0,.08);
+  }
+  .gifBox1 img{
+    width:100%;
+    height:100%;
+    object-fit: cover;      /* fills box nicely */
+    object-position: center;/* keeps it centered */
+    display:block;
+  }
+  
+
+  /* Buttons row (keeps YES fixed and safe) */
+  .btnArea{
+    margin-top:18px;
+    display:flex;
+    gap:12px;
+    align-items:center;
+  }
+
+  button{
+    border:none;
+    padding:12px 20px;
+    font-size:16px;
+    border-radius:14px;
+    font-weight:800;
+    cursor:pointer;
+    user-select:none;
+  }
+
+  .yes{
+    background: linear-gradient(135deg, var(--pink), var(--pink2));
+    color:white;
+    box-shadow:0 14px 30px rgba(244,63,94,.25);
+  }
+
+  /* NO button is absolute in the full screen, not inside row */
+  .no{
+    background:#f3f4f6;
+    color:#111827;
+    position:fixed;
+    left:60%;
+    top:55%;
+  }
+
+  /* Success screen */
+  .success{
+    display:none;
+    text-align:center;
+    width:min(620px, 100%);
+  }
+  .success h1{
+    font-size:32px;
+    margin-bottom:10px;
+  }
+
+  /* Floating hearts */
+  .heart{
+    position:fixed;
+    bottom:-20px;
+    font-size:18px;
+    animation: floatUp linear forwards;
+    pointer-events:none;
+  }
+  @keyframes floatUp{
+    to{
+      transform:translateY(-110vh) translateX(var(--dx));
+      opacity:0;
+    }
+  }
+
+  /* small helper for mobile */
+  @media (max-width:520px){
+    .gifBox{ width:140px; height:140px; flex-basis:140px; }
+    h1{ font-size:24px; }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="screen" id="screen">
+
+  <div class="content" id="mainContent">
+    <div class="textBox" id="safeBox">
+      <h1>💖 Will you be my Valentine?</h1>
+      <p>I was waiting for Propose Day to ask this properly 🥺</p>
+
+      <div class="btnArea">
+        <button class="yes" id="yesBtn">OK 💖</button>
+        <!-- "No" is NOT here anymore so it can’t overlap -->
+      </div>
+    </div>
+
+    <!-- ✅ Put your custom GIF here -->
+    <div class="gifBox">
+      <!-- Replace src with your gif path, e.g. assets/cute.gif -->
+       <img src="asset/please.gif" alt="please gif"> 
+      
+    </div>
+  </div>
+
+  <div class="success" id="success">
+    <h1>🥹💘 YAYYYY</h1>
+    <p>Okay now I officially owe you the cutest date ever.</p>
+
+    <div class="gifBox1">
+      <!-- Replace src with your gif path, e.g. assets/cute.gif -->
+       <img src="asset/yay.gif" alt="yay gif"> 
+      
+    </div>
+
+  </div>
+
+</div>
+
+<!-- NO button floats anywhere on screen -->
+<button class="no" id="noBtn">No 😅</button>
+
+<script>
+  const noBtn = document.getElementById("noBtn");
+  const yesBtn = document.getElementById("yesBtn");
+  const safeBox = document.getElementById("safeBox");
+  const mainContent = document.getElementById("mainContent");
+  const success = document.getElementById("success");
+
+  // Start near center-ish but not on top of YES
+  placeNoButton();
+
+  // Dodge on hover + click (desktop + mobile)
+  noBtn.addEventListener("mouseenter", dodge);
+  noBtn.addEventListener("click", dodge);
+
+  function getRect(el){ return el.getBoundingClientRect(); }
+
+  function overlaps(a, b){
+    return !(
+      a.right < b.left ||
+      a.left > b.right ||
+      a.bottom < b.top ||
+      a.top > b.bottom
+    );
+  }
+
+  function placeNoButton(){
+    // Place it randomly but not overlapping the safeBox (question+YES area)
+    dodge(true);
+  }
+
+  function dodge(initial=false){
+    const safe = getRect(safeBox);
+    const btnW = noBtn.offsetWidth || 90;
+    const btnH = noBtn.offsetHeight || 44;
+
+    const padding = 18;
+
+    // Screen bounds
+    const maxX = window.innerWidth - btnW - padding;
+    const maxY = window.innerHeight - btnH - padding;
+
+    // Try multiple random positions until it's not overlapping the safe area
+    for(let i=0;i<60;i++){
+      const x = padding + Math.random() * (maxX - padding);
+      const y = padding + Math.random() * (maxY - padding);
+
+      noBtn.style.left = x + "px";
+      noBtn.style.top  = y + "px";
+
+      const noRect = noBtn.getBoundingClientRect();
+
+      // Keep NO away from safe box so it never overlaps YES
+      const safeExpanded = {
+        left: safe.left - 20,
+        top: safe.top - 20,
+        right: safe.right + 20,
+        bottom: safe.bottom + 20
+      };
+
+      const safeLikeRect = new DOMRect(
+        safeExpanded.left,
+        safeExpanded.top,
+        safeExpanded.right - safeExpanded.left,
+        safeExpanded.bottom - safeExpanded.top
+      );
+
+      if(!overlaps(noRect, safeLikeRect)) break;
+    }
+
+    // Little playful wiggle when it moves
+    if(!initial){
+      noBtn.animate(
+        [{ transform:"scale(1)" }, { transform:"scale(0.98)" }, { transform:"scale(1)" }],
+        { duration:160, easing:"ease-out" }
+      );
+    }
+  }
+
+  // YES click -> success -> redirect back
+  yesBtn.addEventListener("click", () => {
+    localStorage.setItem("proposalAccepted", "yes");
+
+     // ✅ hide NO button
+    noBtn.style.display = "none";
+
+    mainContent.style.display = "none";
+    success.style.display = "flex";
+
+    popHearts(22);
+
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 2500);
+  });
+
+  // Re-dodge on resize so it doesn't end up in weird place
+  window.addEventListener("resize", () => dodge(true));
+
+  function popHearts(count){
+    const emojis = ["💖","💘","💝","💕"];
+    for(let i=0;i<count;i++){
+      const h = document.createElement("div");
+      h.className = "heart";
+      h.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+      h.style.left = Math.random()*100 + "vw";
+      h.style.setProperty("--dx", (Math.random()*120 - 60) + "px");
+      h.style.animationDuration = (2 + Math.random()*2) + "s";
+      document.body.appendChild(h);
+      setTimeout(()=>h.remove(), 4000);
+    }
+  }
+</script>
+
+</body>
+</html>
